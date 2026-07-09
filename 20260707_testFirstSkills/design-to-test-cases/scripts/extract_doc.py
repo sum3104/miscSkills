@@ -153,6 +153,12 @@ def docx_extract(path, heading, state):
 
 # ---------------------------------------------------------------- xlsx
 
+def tsv_escape(s):
+    """Keep one sheet row on one physical TSV line even when a cell
+    contains tabs or line breaks."""
+    return s.replace("\t", "\\t").replace("\r\n", "\\n").replace("\n", "\\n").replace("\r", "\\n")
+
+
 def col_to_index(ref):
     """'B3' -> 1 (0-based column index)."""
     idx = 0
@@ -181,18 +187,33 @@ def xlsx_sheets(z):
     return sheets
 
 
+def xlsx_si_text(si):
+    """Text of a shared/inline string, excluding phonetic (furigana) runs <rPh>
+    that Japanese workbooks store alongside the visible text."""
+    parts = []
+    t = si.find(f"{S}t")
+    if t is not None:
+        parts.append(t.text or "")
+    for r in si.findall(f"{S}r"):
+        rt = r.find(f"{S}t")
+        if rt is not None:
+            parts.append(rt.text or "")
+    return "".join(parts)
+
+
 def xlsx_shared_strings(z):
     try:
         root = ET.fromstring(z.read("xl/sharedStrings.xml"))
     except KeyError:
         return []
-    return ["".join(t.text or "" for t in si.iter(f"{S}t")) for si in root.findall(f"{S}si")]
+    return [xlsx_si_text(si) for si in root.findall(f"{S}si")]
 
 
 def xlsx_cell_value(c, shared):
     t = c.get("t")
     if t == "inlineStr":
-        return "".join(x.text or "" for x in c.iter(f"{S}t"))
+        is_el = c.find(f"{S}is")
+        return xlsx_si_text(is_el) if is_el is not None else ""
     v = c.find(f"{S}v")
     if v is None or v.text is None:
         return ""
@@ -243,7 +264,7 @@ def xlsx_extract(path, sheet_name, state):
             for c in row.findall(f"{S}c"):
                 val = xlsx_cell_value(c, shared)
                 if val != "":
-                    cells[col_to_index(c.get("r") or "A1")] = val
+                    cells[col_to_index(c.get("r") or "A1")] = tsv_escape(val)
             if not cells:
                 continue
             width = max(cells) + 1
