@@ -1,0 +1,28 @@
+# Skill runtime outputs (may contain design doc content)
+test-case-work/
+test-cases.md
+
+# Local test inputs (design documents)
+*.docx
+*.xlsx
+*.xlsm
+*.pdf
+*.doc
+*.xls
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.cursor/
