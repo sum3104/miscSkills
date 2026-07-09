@@ -36,7 +36,8 @@ MCP は使いません。vault はただの Markdown フォルダなので、エ
   非公開形式で変更されやすく、パースは脆い上に追加の LLM 呼び出しコストが
   かかります。代わりに「会話コンテキストがまだ生きているセッション内で、
   エージェント自身が蒸留して vault に書き込む」方式を採ります。
-  Agent Skills 標準（SKILL.md）なので Copilot / Claude Code の両方で動きます。
+  Agent Skills 標準（SKILL.md）なので Claude Code / GitHub Copilot / Cursor の
+  いずれでも動きます。
 - **docs/ を vault ルートにする**: superpowers が生成する plans / specs や
   ADR を移動せず、蒸留ノートから `[[wiki-link]]` で直接参照できます。
   グラフビューにも乗ります。
@@ -54,8 +55,9 @@ MCP は使いません。vault はただの Markdown フォルダなので、エ
    2フォルダを、お使いのエージェントのスキルディレクトリに**並べて**
    コピーします（backfill が capture の references を相対パスで参照するため、
    同じ親ディレクトリに置くこと）。
-   - GitHub Copilot の例: `.github/skills/`
-   - Claude Code の例: `.claude/skills/`
+   - Claude Code: `.claude/skills/`（ユーザー共通は `~/.claude/skills/`）
+   - GitHub Copilot: `.github/skills/`（`.claude/skills/` も読み取れます）
+   - Cursor: `.cursor/skills/`（ユーザー共通は `~/.cursor/skills/`）
 2. **vault の配置**: `vault-template/` の中身（`copilot-instructions-snippet.md`
    を除く）をプロジェクトの `docs/` にコピーします。既存の `docs/plans/` や
    `docs/specs/` はそのままで構いません。Obsidian で `docs/` を
@@ -66,7 +68,8 @@ MCP は使いません。vault はただの Markdown フォルダなので、エ
    ```
 4. **自動起動の設定**: `vault-template/copilot-instructions-snippet.md` の
    内容（英語のセクション）を、プロジェクトの
-   `.github/copilot-instructions.md`（Claude Code なら `CLAUDE.md`）に
+   `.github/copilot-instructions.md`（Claude Code なら `CLAUDE.md`、
+   Cursor なら `.cursor/rules/` の alwaysApply ルール）に
    **転記**します。ファイル自体を置くのではなく中身をコピーしてください。
    エージェントは毎セッションこの instructions を読むため、brainstorming で
    design doc を書き終えたタイミングで knowledge-capture が自動で起動する

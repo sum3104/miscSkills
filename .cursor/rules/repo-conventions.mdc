@@ -9,6 +9,12 @@ Follow the repository conventions defined in @CLAUDE.md. In particular:
   everything under references/) in English. Skill *outputs* follow the
   language of the target documents.
 - Each skill set lives in its own `YYYYMMDD_name/` subfolder.
+- Skills follow the Agent Skills open standard (SKILL.md with `name` and
+  `description` frontmatter only; supporting files under `scripts/`,
+  `references/`, `assets/`) so they stay portable across Claude Code,
+  GitHub Copilot, and Cursor. Each skill's README lists the install paths
+  for all three agents. Never write a skill as a `.cursor/rules/*.mdc`
+  file — that format is Cursor-only.
 - Before finishing work or committing, run `git status` (including untracked
   files) and verify nothing unfit for GitHub is included: runtime/work
   outputs, dry-run or scratch files, secrets (.env, keys, tokens), test

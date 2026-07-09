@@ -18,12 +18,16 @@ design-to-test-cases/
 
 ## 導入方法
 
-一般的なAgent Skills形式（SKILL.md + frontmatter）に従っているため、
-エージェントのスキルディレクトリに `design-to-test-cases` フォルダごと
-コピーしてください。
+Agent Skills オープン標準（SKILL.md + frontmatter）に従っているため、
+お使いのエージェントのスキルディレクトリに `design-to-test-cases`
+フォルダごとコピーしてください。
 
-- Claude Code の例: `.claude/skills/design-to-test-cases/`（プロジェクト用）
+- Claude Code: `.claude/skills/design-to-test-cases/`（プロジェクト用）
   または `~/.claude/skills/design-to-test-cases/`（ユーザー共通）
+- GitHub Copilot: `.github/skills/design-to-test-cases/`
+  （`.claude/skills/` に置いたものも読み取れます）
+- Cursor: `.cursor/skills/design-to-test-cases/`（プロジェクト用）
+  または `~/.cursor/skills/design-to-test-cases/`（ユーザー共通）
 
 ## 設計上のポイント
 

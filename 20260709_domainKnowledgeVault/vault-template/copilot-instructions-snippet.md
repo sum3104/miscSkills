@@ -2,6 +2,7 @@
 Copy the section below into the real project's agent instructions file:
   - GitHub Copilot: .github/copilot-instructions.md
   - Claude Code:    CLAUDE.md
+  - Cursor:         an alwaysApply rule under .cursor/rules/
 Do NOT place this file itself in the project; transcribe its content.
 -->
 

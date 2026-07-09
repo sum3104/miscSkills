@@ -12,6 +12,27 @@
 - スキルが生成する**成果物の言語は対象ドキュメントに従う**
   （日本語の設計書 → 日本語の成果物）。この規約は各 SKILL.md 内にも明記する。
 
+## スキル形式の可搬性（エージェント間互換性）
+
+- スキル本体は Agent Skills オープン標準
+  （<https://agentskills.io/specification>）に従う: スキルルート直下に
+  `SKILL.md` を置き、frontmatter は `name` と `description` のみを基本とする。
+  補助ファイルは `scripts/` / `references/` / `assets/` に収める。
+  この形式は Claude Code / GitHub Copilot / Cursor など主要エージェントが
+  共通で読み取れるため、特定エージェント固有の frontmatter
+  （Claude Code の `allowed-tools` など）を使う場合は、可搬性が下がる旨を
+  該当スキルの README に明記する。
+- 各スキルフォルダの README には「導入方法」節を設け、以下の配置パスを
+  列挙する（`YYYYMMDD_名前/` 配下は原本置き場で、利用時はそこからコピーする）:
+  - Claude Code: `.claude/skills/<name>/`（プロジェクト）または
+    `~/.claude/skills/<name>/`（ユーザー共通）
+  - GitHub Copilot: `.github/skills/<name>/`（`.claude/skills/` も読み取れる）
+  - Cursor: `.cursor/skills/<name>/`（ユーザー共通は `~/.cursor/skills/`）
+- `.cursor/rules/*.mdc` は Cursor 専用の常時適用ルール形式であり、
+  SKILL.md 標準とは別物（他エージェントには移植できない）。
+  `repo-conventions.mdc` はこちらに属する。スキルを `.mdc` 形式で
+  書かないこと。
+
 ## 作業終了時のコミット前チェック（必須）
 
 作業を終えるとき・コミットする前に、`git status` で**未追跡ファイルを含めて**
