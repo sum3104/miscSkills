@@ -1,0 +1,18 @@
+---
+description: Repository conventions for miscSkills (language rules for skills/READMEs, pre-commit hygiene check)
+alwaysApply: true
+---
+
+Follow the repository conventions defined in @CLAUDE.md. In particular:
+
+- Write README.md files in Japanese; write skill prompt files (SKILL.md and
+  everything under references/) in English. Skill *outputs* follow the
+  language of the target documents.
+- Each skill set lives in its own `YYYYMMDD_name/` subfolder.
+- Before finishing work or committing, run `git status` (including untracked
+  files) and verify nothing unfit for GitHub is included: runtime/work
+  outputs, dry-run or scratch files, secrets (.env, keys, tokens), test
+  inputs containing personal or business data (docx/xlsx/pdf), editor-local
+  state (Obsidian workspace.json, non-rules `.cursor/` files), large
+  binaries. Add offenders to .gitignore or delete them, and report to the
+  user what was excluded.

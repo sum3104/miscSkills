@@ -25,4 +25,7 @@ venv/
 # OS / editor
 .DS_Store
 Thumbs.db
-.cursor/
+
+# Cursor: share rules, ignore local state
+.cursor/*
+!.cursor/rules/
