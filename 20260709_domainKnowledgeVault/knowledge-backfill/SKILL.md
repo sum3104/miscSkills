@@ -19,13 +19,21 @@ references (paths below assume the two skill folders sit side by side):
 - Note formats and conventions:
   [../knowledge-capture/references/note-templates.md](../knowledge-capture/references/note-templates.md)
 
+Notes are written in the language of the source documents (Japanese specs →
+Japanese notes), regardless of this skill being English.
+
 ## Step 1 — Inventory the documents
 
-List the files under `docs/specs/`, `docs/plans/`, and the ADR directory
-(commonly `docs/adr/`; ask if it is elsewhere). Record path and date (from
-the filename or frontmatter; fall back to `git log --follow --format=%as -1
--- <file>` for the first commit date). If `docs/knowledge/` does not exist,
-offer to scaffold it from the bundled `vault-template/` first.
+List the files under the spec/plan directories — current superpowers
+writes to `docs/superpowers/specs/` and `docs/superpowers/plans/`, older
+layouts use `docs/specs/` and `docs/plans/`; both generations may coexist,
+so inventory whichever exist — and the ADR directory (commonly `docs/adr/`;
+ask if it is elsewhere). Record path and date (from the filename or
+frontmatter; fall back to `git log --follow --format=%as -1 -- <file>` for
+the first commit date). Source wiki-links in notes must use the real
+vault-root-relative path (e.g. `[[superpowers/plans/...]]` vs
+`[[plans/...]]`). If `docs/knowledge/` does not exist, offer to scaffold
+it from the bundled `vault-template/` first.
 
 Confirm the inventory and intended scope with the user before extracting —
 they may want to exclude abandoned plans or superseded specs.

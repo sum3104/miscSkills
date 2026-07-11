@@ -16,8 +16,11 @@ stay in English so they are machine-searchable.
     (vault-root-relative, e.g. `"[[plans/2026-07-01-shipping]]"`) and/or a
     session marker (`"brainstorming 2026-07-09"`)
   - `created` / `updated`: ISO dates
-- **Links**: `[[wiki-links]]` between notes; vault root is `docs/`, so specs
-  and plans are addressed as `[[plans/...]]`, `[[specs/...]]`, `[[adr/...]]`.
+- **Links**: `[[wiki-links]]` between notes; vault root is `docs/`. Address
+  specs and plans by the path that actually exists —
+  `[[superpowers/specs/...]]`, `[[superpowers/plans/...]]` (current
+  superpowers layout) or `[[specs/...]]`, `[[plans/...]]` (older layout) —
+  and ADRs as `[[adr/...]]`.
 - **Unconfirmed details**: tag the specific line with `[ASSUMPTION]`, keep
   `status: draft`.
 - **History**: when a rule's content changes or sources conflict, append the

@@ -10,8 +10,9 @@ specs / plans / ADR は「その時点の成果物」として不変であり、
 
 - ノートの追加・更新は `knowledge-capture` スキル（会話から）と
   `knowledge-backfill` スキル（既存ドキュメントから）が行います。手動編集も自由です。
-- `status: draft` のノートは未確認の内容（`[ASSUMPTION]` タグ付き）を含みます。
-  確認が取れたら `confirmed` に更新してください。
+  技術的意思決定は `adr-capture` スキルが `adr/` に draft ADR として記録します。
+- `status: draft` のノート・`status: proposed` の ADR は未確認の内容を含みます。
+  確認が取れたら `confirmed` / `accepted` に更新してください。
 
 ## ドメイン用語
 

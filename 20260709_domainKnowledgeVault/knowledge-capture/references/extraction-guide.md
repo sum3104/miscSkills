@@ -35,11 +35,15 @@ business may do, in one of these shapes:
 Also capture the **domain reason behind a rejected alternative** when the
 reason is a business fact, not a technical one ("後払いを外したのは与信コスト
 が単価に見合わないため" → that cost structure is domain knowledge).
+Rejection reasons split by the *kind* of reason: business fact → vault
+note (here); technical reason → the ADR, via `adr-capture`.
 
 ## Do NOT capture
 
 - **Technical / implementation decisions** — library choice, architecture,
-  schema design. These belong in an ADR; suggest the ADR skill instead.
+  schema design. These belong in an ADR — hand them to the `adr-capture`
+  skill (invoke it if it has not run this session; if it is not installed,
+  surface the decision in the report instead).
 - **Task/session logistics** — plans for the day, TODO ordering, tooling talk.
 - **Generic industry knowledge** the session did not confirm as applying to
   this project. If it was confirmed ("うちも標準の消費税区分に従う"), capture

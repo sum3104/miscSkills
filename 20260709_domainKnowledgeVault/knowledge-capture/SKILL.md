@@ -1,6 +1,6 @@
 ---
 name: knowledge-capture
-description: Distill domain knowledge and business rules from the current conversation into a git-managed Obsidian vault (docs/knowledge). Use right after finishing a brainstorming or design session (once the design doc / spec / plan has been written), before ending a session that contained substantial domain discussion, or when the user asks to record domain terms, business rules, or domain knowledge.
+description: Distill domain knowledge and business rules from the current conversation into a git-managed Obsidian vault (docs/knowledge). Use right after finishing a brainstorming or design session (once the design doc / spec / plan has been written), before ending a session that contained substantial domain discussion, or when the user asks to record domain terms, business rules, or domain knowledge. When both this skill and adr-capture fire on a finished design doc, adr-capture runs first so notes can link the fresh ADRs.
 ---
 
 # Knowledge-Capture
@@ -32,9 +32,16 @@ docs/
 │   ├── Home.md          # map of content
 │   ├── domain/          # one note per domain term / concept
 │   └── rules/           # one note per business rule
-├── plans/  specs/  adr/ # superpowers / ADR outputs — never modified by this skill
+├── adr/                 # ADRs (adr-capture output) — only adr-capture edits these
+├── superpowers/
+│   └── specs/  plans/   # current superpowers output — never modified by this skill
+├── specs/  plans/       # older superpowers layout — same rule; either generation may exist
 └── .obsidian/
 ```
+
+Specs and plans may live under `docs/superpowers/` (current superpowers)
+or directly under `docs/` (older layout) — detect which paths actually
+exist and address wiki-links accordingly.
 
 If `docs/knowledge/` does not exist, tell the user and offer to scaffold it
 from the bundled `vault-template/` before continuing.
@@ -54,8 +61,12 @@ you are looking for:
   usually drops).
 - **Assumptions** stated but not confirmed.
 
-Do NOT capture technical/implementation decisions — those belong in an ADR;
-if you notice an unrecorded one, suggest the ADR skill to the user instead.
+Do NOT capture technical/implementation decisions — those belong in an
+ADR. If you notice an ADR-worthy decision that is not yet recorded and the
+`adr-capture` skill has not already run this session, invoke `adr-capture`
+now (before Step 3, so new notes can wiki-link the fresh ADRs). If
+`adr-capture` is not installed, list the decision in the Step 5 report
+instead of writing it into the vault.
 
 ## Step 2 — Check the vault for existing notes
 
@@ -94,10 +105,14 @@ Key rules:
 - Cross-link related notes with `[[wiki-links]]` (e.g. a rule links to the
   domain terms it uses).
 - Link each note to its source spec/plan/ADR using vault-root-relative links
-  such as `[[plans/2026-07-01-shipping]]`.
+  matching the path that actually exists —
+  `[[superpowers/plans/2026-07-01-shipping]]` (current superpowers layout)
+  or `[[plans/2026-07-01-shipping]]` (older layout). ADRs created by
+  `adr-capture` this session are linked as `[[adr/NNNN-...]]`.
 - Add genuinely new notes to the relevant list in `knowledge/Home.md`.
-- Never edit anything under `plans/`, `specs/`, or the ADR directory. They
-  are immutable point-in-time artifacts; the vault links *to* them.
+- Never edit anything under `plans/`, `specs/` (either path generation), or
+  the ADR directory. They are immutable point-in-time artifacts; the vault
+  links *to* them.
 
 ## Step 5 — Report to the user
 
