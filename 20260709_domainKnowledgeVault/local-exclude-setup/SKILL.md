@@ -94,23 +94,45 @@ and proceed with the exclusion for future files either way.
 ## Step 4 — Local instructions file with commit guard
 
 1. **Pick the file.** Ask which agent(s) are used in this clone (skip the
-   question if the session makes it obvious) and use the dedicated
-   local-only file per agent:
+   question if the session makes it obvious).
+
+   For **Claude Code** and **Cursor**, the local files are natively
+   always-applied — use them directly:
 
    | Agent          | Local instructions file                        | Required frontmatter    |
    |----------------|------------------------------------------------|-------------------------|
-   | GitHub Copilot | `.github/instructions/dkv-local.instructions.md` | `applyTo: "**"`       |
    | Claude Code    | `CLAUDE.local.md`                              | none                    |
    | Cursor         | `.cursor/rules/dkv-local.mdc`                  | `alwaysApply: true`     |
 
-   **Never create `.github/copilot-instructions.md` yourself.** It is the
-   team's shared filename; if the team later commits one, a local untracked
-   copy makes their `git pull` / `git checkout` fail with "untracked
-   working tree file would be overwritten". Exception: if an **untracked**
+   For **GitHub Copilot**, the two candidate files differ in how reliably
+   they apply, so ask one more question: **"Does the team share (or plan
+   to share) a `.github/copilot-instructions.md` or `AGENTS.md` in this
+   repository?"** Then pick by the answer:
+
+   - **No — the team does not use shared Copilot instructions** (user
+     explicitly confirms): create an **untracked
+     `.github/copilot-instructions.md`**. VS Code attaches this file to
+     **every chat request**, so session-wide rules (response language,
+     skill auto-triggers, the commit guard) apply reliably. State the
+     trade-off before writing it: `info/exclude` only hides the file from
+     `git status` — if the team ever commits a file with this name,
+     `git pull` / `git checkout` will fail loudly with "untracked working
+     tree file would be overwritten" (recoverable: move the local file
+     aside, pull, then merge the content back).
+   - **Yes, or unsure** (safe default): use
+     `.github/instructions/dkv-local.instructions.md` with frontmatter
+     `applyTo: "**"`. Zero collision risk, but tell the user the
+     limitation: `applyTo` instructions are attached **dynamically based
+     on the files the agent is working on**, not unconditionally to every
+     chat request, so session-wide behavioral rules and auto-triggers
+     apply less reliably than `copilot-instructions.md`. If a trigger is
+     missed, the user must invoke the skill by name explicitly.
+
+   Existing-file rules, regardless of the answer: if an **untracked**
    `.github/copilot-instructions.md` already exists locally (the user made
    it by hand), offer to append to it and exclude it instead of creating a
-   new file. If the file with that name is *tracked*, leave it alone and
-   use the dedicated file above.
+   new file. If a file with that name is *tracked*, leave it alone and use
+   the dedicated `dkv-local.instructions.md` file.
 
 2. **Write the content.** Into the chosen file, write:
    - the domainKnowledgeVault auto-trigger section (the content of
@@ -161,6 +183,13 @@ and proceed with the exclusion for future files either way.
   - the local instructions file's path, and that it carries the commit
     guard (workflow commit steps for excluded paths will be skipped;
     source-code commits are unaffected);
+  - for GitHub Copilot, which mechanism was chosen and its consequence:
+    untracked `copilot-instructions.md` = applied to every chat request,
+    but a future team commit of that filename makes `git pull` fail
+    loudly (recovery: move the file aside, pull, merge back);
+    `dkv-local.instructions.md` (`applyTo: "**"`) = no collision risk,
+    but dynamically attached and thus less reliable for session-wide
+    rules — invoke the skills by name if a trigger is missed;
   - any still-tracked files found in Step 2 (they will keep appearing in
     `git status` when modified);
   - that this setting is per-clone: a fresh clone needs this skill run
@@ -178,5 +207,9 @@ and proceed with the exclusion for future files either way.
       instructions file — never to a tracked or shared one.
 - [ ] The local instructions file itself is listed in the marked block and
       passes `git check-ignore -v`.
-- [ ] `.github/copilot-instructions.md` was not newly created by this skill.
+- [ ] `.github/copilot-instructions.md` was newly created only after the
+      user explicitly confirmed the team does not share Copilot
+      instructions files; its literal path is in the marked block and
+      passes `git check-ignore -v`, and the pull-collision trade-off was
+      stated before writing it.
 - [ ] The user was told the setting is local to this clone and how to undo it.
